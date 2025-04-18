@@ -8,20 +8,36 @@ import (
 )
 
 type Lexer struct {
-	code string
-	tokens []*token.Token
-	start int
-	current int
-	line int
+	code  		string
+	tokens  	[]*token.Token
+	start  		int
+	current  	int
+	line   		int
+	keywords 	map[string]token.TokenType
 }
 
 func NewLexer(code string) *Lexer {
 	return &Lexer{
-		code: code,
-		tokens: make([]*token.Token, 0),
-		start: 0,
-		current: 0,
-		line: 1,
+		code:  		code,
+		tokens: 	make([]*token.Token, 0),
+		start: 		0,
+		current: 	0,
+		line: 		1,
+		keywords:  	map[string]token.TokenType {
+			"if": 		token.IF,
+			"else": 	token.ELSE,
+			"false": 	token.FALSE,
+			"true": 	token.TRUE,
+			"for": 		token.FOR,
+			"nil": 		token.NIL,
+			"print": 	token.PRINT,
+			"return": 	token.RETURN,
+			"int": 		token.INT,
+			"float": 	token.FLOAT,
+			"string": 	token.STRING,
+			"bool": 	token.BOOL,
+			"char": 	token.CHAR,
+		},
 	}
 }
 
@@ -94,13 +110,34 @@ func (l *Lexer) lexNumber() {
 	if isFloatingPoint {
 		l.addToken(token.FLOAT, l.code[l.start:l.current])
 	} else {
-		l.addToken(token.INT, l.code[l.start:l.current])
+		l.addToken(token.INT, l.code[l.start:l.current])	
+	}
+
+}
+func (l *Lexer) lexIdentifier() {
+
+	for !l.isAtEnd() && l.isAlphaNumeric(l.peek()) { l.advance() }
+	lexeme := l.code[l.start:l.current]
+
+	tokenType, exists := l.keywords[lexeme]
+	if exists {
+		l.prepToken(tokenType)
+	} else {
+		l.addToken(token.IDENT, lexeme)
 	}
 
 }
 
 func (l *Lexer) isDigit(r rune) bool {
 	return r >= '0' && r <= '9'
+}
+func (l *Lexer) isAlpha(r rune) bool {
+	return r == '_' || 
+	(r >= 'a' && r <= 'z') || 
+	(r >= 'A' && r <= 'Z')
+}
+func (l *Lexer) isAlphaNumeric(r rune) bool {
+	return l.isAlpha(r) || l.isDigit(r)
 }
 
 func (l *Lexer) scanToken() {
@@ -150,8 +187,11 @@ func (l *Lexer) scanToken() {
 	// Numbers
 	case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9': l.lexNumber()
 
-
-	default: fmt.Println("No token found")
+	default: {
+		if l.isAlpha(c) {
+			l.lexIdentifier()
+		} else {utils.Error(l.line, "Unidentified symbol.")}
+	}
 
 	}
 

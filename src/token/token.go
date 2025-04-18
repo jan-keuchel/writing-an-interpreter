@@ -14,7 +14,15 @@ const (
 	CHAR
 
 	IDENT
-	KEYWORD
+
+	IF
+	ELSE
+	FALSE
+	TRUE
+	FOR
+	NIL
+	PRINT
+	RETURN
 
 	DOT
 	COMMA
@@ -70,7 +78,6 @@ func (t TokenType) String() string {
 	case BOOL: return "BOOL"
 	case CHAR: return "CHAR"
 	case IDENT: return "IDENT"
-	case KEYWORD: return "KEYWORD"
 	case DOT: return "DOT"
 	case COMMA: return "COMMA"
 	case SEMICOLON: return "SEMICOLON"
@@ -96,6 +103,14 @@ func (t TokenType) String() string {
 	case MINUS_EQUAL: return "MINUS_EQUAL"
 	case MUL_EQUAL: return "MUL_EQUAL"
 	case DIV_EQUAL: return "DIV_EQUAL"
+	case IF: return "IF"
+	case ELSE: return "ELSE"
+	case FALSE: return "FALSE"
+	case TRUE: return "TRUE"
+	case FOR: return "FOR"
+	case NIL: return "NIL"
+	case PRINT: return "PRINT"
+	case RETURN: return "RETURN"
 	default: return "UNKNOWN"
 	}
 }
