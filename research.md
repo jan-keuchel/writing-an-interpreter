@@ -4,9 +4,7 @@
 - Lexer
 - Parser
 - AST
-- Bytecode-compiler
-- Bytecode interpreter
-- Runtime
+- Evaluator
 
 
 ## Language example
@@ -42,7 +40,7 @@ func add(int x, int y) int {
 - if/else statements
 - loops
 
-## How the compiler works
+## How a interpreter works
 Lexing, Parsing and building of the AST all happen at static time, meaning the programm is not running so far. It's just a translation from one representation to another.
 
 ### Lexer 
