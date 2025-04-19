@@ -75,7 +75,7 @@ func NewToken(tokenType TokenType, literal string, value any, line int) *Token {
 }
 
 func (t Token) String() string {
-	return fmt.Sprintf("Type: %-10s Literal: %-10s Value: %-10v Line: %d", t.Type.String(), t.Literal, t.Value, t.Line)
+	return fmt.Sprintf("Type: %-10s Literal: %-15s Value: %-10v Line: %d", t.Type.String(), t.Literal, t.Value, t.Line)
 }
 
 

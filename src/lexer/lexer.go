@@ -84,18 +84,37 @@ func (l *Lexer) lexComment() {
 }
 func (l *Lexer) lexString() {
 
+	updatedLine := l.line
+	value := []rune{}
+
 	for !l.isAtEnd() && l.peek() != '"' { 
 		if l.peek() == '\n' {
-			l.line++
+			updatedLine++
+			l.advance() 
 		}
-		l.advance() 
+		if !l.isAtEnd() && l.peek() == '\\' {
+			l.advance()
+			next := l.peek()
+			switch next {
+			case 'n': value = append(value, '\n')
+			case 't': value = append(value, '\t')
+			case '"': value = append(value, '"')
+			case '\\': value = append(value, '\\')
+			default: utils.Error(updatedLine, fmt.Sprintf("Umknown escape sequence. \\%c", next))
+			}
+			l.advance()
+		} else {
+			value = append(value, l.peek())
+			l.advance()
+		}
 	}
 	if l.isAtEnd() {
 		utils.Error(l.line, "Unterminated string.")
 		return 
 	}
 	l.advance()
-	l.addToken(token.STRING, l.code[l.start+1:l.current-1])
+	l.addToken(token.STRING, string(value))
+	l.line = updatedLine
 
 }
 func (l *Lexer) lexNumber() {
@@ -121,7 +140,7 @@ func (l *Lexer) lexNumber() {
 			fmt.Println("Error converting string into integer:", err)
 			return
 		}
-		l.addToken(token.FLOAT, value)
+		l.addToken(token.INT, value)
 	}
 
 }
@@ -218,11 +237,11 @@ func (l *Lexer) LexCode() []*token.Token {
 		l.start = l.current
 		l.scanToken()
 	}
-	l.addToken(token.EOF, "")
+	l.tokens = append(l.tokens, token.NewToken(token.EOF, "", nil, l.line))
 
-	for _, token := range l.tokens {
-		fmt.Printf("%v\n", token)
-	}
+	// for _, token := range l.tokens {
+	// 	fmt.Printf("%v\n", token)
+	// }
 
 	return l.tokens
 
