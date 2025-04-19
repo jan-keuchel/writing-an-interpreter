@@ -67,7 +67,12 @@ Lexing, Parsing and building of the AST all happen at static time, meaning the p
 - A programm consists of several expressions. All possible (meaning syntactically correct expressions) are described by the following grammar:
 
 ```ebnf
-expression ::= literal | unary | binary | grouping;
+expression ::= literal | unary | binary | grouping ;
+literal    ::= NUMBER | STRING | "true" | "false" | "nil" ;
+unary      ::= ( "-" | "!" ) expression ;
+binary     ::= expression operator expression ;
+grouping   ::= "(" expression ")" ;
+operator   ::= "==" | "<=" | ">=" | "!=" | ">" | "<" | "+" | "-" | "*" | "/" ;
 ```
 
 ## Credits
