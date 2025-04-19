@@ -60,21 +60,24 @@ const (
 
 type Token struct {
 	Type 	TokenType
-	Value	string
+	Literal	string
+	Value 	any
 	Line 	int
 }
 
-func NewToken(tokenType TokenType, value string, line int) *Token {
+func NewToken(tokenType TokenType, literal string, value any, line int) *Token {
 	return &Token{
-		Type:  tokenType,
-		Value: value,
-		Line:  line,
+		Type:    tokenType,
+		Literal: literal,
+		Value: 	 value,
+		Line:    line,
 	}
 }
 
 func (t Token) String() string {
-	return fmt.Sprintf("Type: %-12s Value: %-20s Line: %4d", t.Type.String(), t.Value, t.Line)
+	return fmt.Sprintf("Type: %-10s Literal: %-10s Value: %-10v Line: %d", t.Type.String(), t.Literal, t.Value, t.Line)
 }
+
 
 func (t TokenType) String() string {
 	switch t {

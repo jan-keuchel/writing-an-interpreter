@@ -2,6 +2,7 @@ package lexer
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/jan-keuchel/writing-an-interpreter/src/token"
 	"github.com/jan-keuchel/writing-an-interpreter/src/utils"
@@ -69,13 +70,13 @@ func (l *Lexer) match(expected rune) bool {
 	return true
 }
 
-func (l *Lexer) addToken(tokenType token.TokenType, 
-	tokenValue string) {
-	l.tokens = append(l.tokens, token.NewToken(tokenType, tokenValue, l.line))
+func (l *Lexer) addToken(tokenType token.TokenType, value any) {
+	literal := l.code[l.start:l.current]
+	l.tokens = append(l.tokens, token.NewToken(tokenType, literal, value, l.line))
 }
 
 func (l *Lexer) prepToken(tokenType token.TokenType) {
-	l.addToken(tokenType, "")
+	l.addToken(tokenType, nil)
 }
 
 func (l *Lexer) lexComment() {
@@ -108,9 +109,19 @@ func (l *Lexer) lexNumber() {
 	for !l.isAtEnd() && l.isDigit(l.peek()) { l.advance() }
 
 	if isFloatingPoint {
-		l.addToken(token.FLOAT, l.code[l.start:l.current])
+		value, err := strconv.ParseFloat(l.code[l.start:l.current], 64)
+		if err != nil {
+			fmt.Println("Error converting string into float:", err)
+			return
+		}
+		l.addToken(token.FLOAT, value)
 	} else {
-		l.addToken(token.INT, l.code[l.start:l.current])	
+		value, err := strconv.Atoi(l.code[l.start:l.current])
+		if err != nil {
+			fmt.Println("Error converting string into integer:", err)
+			return
+		}
+		l.addToken(token.FLOAT, value)
 	}
 
 }
@@ -121,9 +132,13 @@ func (l *Lexer) lexIdentifier() {
 
 	tokenType, exists := l.keywords[lexeme]
 	if exists {
-		l.prepToken(tokenType)
+		if tokenType == token.TRUE || tokenType == token.FALSE {
+			l.addToken(tokenType, tokenType == token.TRUE)
+		} else {
+			l.prepToken(tokenType)
+		}
 	} else {
-		l.addToken(token.IDENT, lexeme)
+		l.prepToken(token.IDENT)
 	}
 
 }
