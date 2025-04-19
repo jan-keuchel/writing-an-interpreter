@@ -66,12 +66,9 @@ Lexing, Parsing and building of the AST all happen at static time, meaning the p
 #### Expressions
 - A programm consists of several expressions. All possible (meaning syntactically correct expressions) are described by the following grammar:
 
-<pre><code>```ebnf
-<expression> ::=    literal |
-                    unary |
-                    binary |
-                    grouping;
-```</code></pre>
+<pre><code>
+expression ::= literal | unary | binary | grouping;
+</code></pre>
 
 
 ## Credits
