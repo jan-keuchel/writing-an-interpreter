@@ -113,7 +113,7 @@ func (l *Lexer) lexString() {
 		return 
 	}
 	l.advance()
-	l.addToken(token.STRING, string(value))
+		l.addToken(token.STRING, string(value))
 	l.line = updatedLine
 
 }

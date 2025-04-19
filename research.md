@@ -1,6 +1,6 @@
-# Information necessary in order to write a interpreter
+# Information necessary in order to write an interpreter
 
-## Pieces of a interpreter
+## Pieces of an interpreter
 - Lexer
 - Parser
 - AST
