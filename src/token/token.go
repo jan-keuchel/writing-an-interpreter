@@ -1,5 +1,9 @@
 package token
 
+import (
+	"fmt"
+)
+
 type TokenType  int
 
 const (
@@ -57,16 +61,20 @@ const (
 type Token struct {
 	Type 	TokenType
 	Value	string
+	Line 	int
 }
 
-func NewToken(tokenType TokenType, value string) *Token {
+func NewToken(tokenType TokenType, value string, line int) *Token {
 	return &Token{
 		Type:  tokenType,
 		Value: value,
+		Line:  line,
 	}
 }
 
-
+func (t Token) String() string {
+	return fmt.Sprintf("Type: %-12s Value: %-20s Line: %4d", t.Type.String(), t.Value, t.Line)
+}
 
 func (t TokenType) String() string {
 	switch t {

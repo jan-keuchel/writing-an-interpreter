@@ -71,7 +71,7 @@ func (l *Lexer) match(expected rune) bool {
 
 func (l *Lexer) addToken(tokenType token.TokenType, 
 	tokenValue string) {
-	l.tokens = append(l.tokens, token.NewToken(tokenType, tokenValue))
+	l.tokens = append(l.tokens, token.NewToken(tokenType, tokenValue, l.line))
 }
 
 func (l *Lexer) prepToken(tokenType token.TokenType) {
@@ -206,7 +206,7 @@ func (l *Lexer) LexCode() []*token.Token {
 	l.addToken(token.EOF, "")
 
 	for _, token := range l.tokens {
-		fmt.Printf("Type: %-15s Value: %s\n", token.Type, token.Value)
+		fmt.Printf("%v\n", token)
 	}
 
 	return l.tokens

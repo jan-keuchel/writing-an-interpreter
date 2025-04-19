@@ -21,7 +21,7 @@ func main() {
 	}
 	code := string(bytes)
 
-	fmt.Printf("Code: %s\n", code)
+	fmt.Printf("Code: \n%s\n", code)
 
 	lexer := lexer.NewLexer(code)
 	lexer.LexCode()
