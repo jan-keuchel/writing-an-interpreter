@@ -1,15 +1,15 @@
-# Information necessary in order to write a compiler
+# Information necessary in order to write a interpreter
 
-## Pieces of a compiler
+## Pieces of a interpreter
 - Lexer
 - Parser
 - AST
 - Evaluator
 
 
-## Language example
+## JK Language example
 
-```
+```JK
 int a = 3;
 if (a <= 5) {
     print("a is small");
@@ -76,4 +76,4 @@ operator   ::= "==" | "<=" | ">=" | "!=" | ">" | "<" | "+" | "-" | "*" | "/" ;
 ```
 
 ## Credits
-- I'm using the book "Crafting Interpreters" as a guide: [Book link]{https://craftinginterpreters.com/}
+- I'm using the book "Crafting Interpreters" as a guide: [Book link](https://craftinginterpreters.com/)
